@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Bazar.Models.Entities.Product>
+
+@{
+    ViewBag.Title = "Товары";
+
+    if (ViewBag.JS == null)
+    {
+        ViewBag.JS = new List<string>();
+    }
+
+    ViewBag.JS.Add("/js/admin/product.js");
+}
+
+<div class="headers">
+    <h1>@ViewBag.Title</h1>
+</div>
+
+<div class="buttons">
+    <a class="btn btn-success" asp-action="Create">
+        Добавить товар
+    </a>
+</div>
+
+@if (TempData["message"] != null)
+{
+    <div class="alert @TempData["alertType"]" role="alert">
+        @TempData["message"]
+    </div>
+}
+
+<div class="text-muted mt-2 mb-1">Перетаскивайте строки для изменения порядка сортировки</div>
+
+<table class="table table-hover">
+    <thead class="thead-inverse">
+        <tr>
+            <th>Изображение</th>
+            <th>Иконка</th>
+            <th>Название</th>
+            <th class="text-center">Действия</th>
+        </tr>
+    </thead>
+    <tbody id="sortable">
+        @if (Model.Count() > 0)
+        {
+            @foreach (var item in Model)
+            {
+                <tr class="product-item" data-id="@item.ProductId">
+                    <td>
+                        <img width="100" src="/DynamicImages/Product/@item.ImageFileName" alt="Тут будет картинка" />
+                    </td>
+                    <td>
+                        <img width="100" src="/DynamicImages/Product/@item.IconFileName" alt="Тут будет картинка" />
+                    </td>
+                    <td>@item.Title</td>
+                    <td class="text-center">
+                        <form asp-action="Delete" method="post">
+                            <a asp-action="Edit" class="btn btn-sm btn-warning"
+                               asp-route-id="@item.ProductId">
+                                Редактировать
+                            </a>
+                            <input type="hidden" name="id" value="@item.ProductId" />
+                            <button type="submit" class="btn btn-danger btn-sm delete-button">
+                                Удалить
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4">Нет записей</td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@Html.Partial("_ConfirmDeleteModalPartial", "Товар будет удален")

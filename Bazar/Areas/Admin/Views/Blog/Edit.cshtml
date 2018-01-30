@@ -1,0 +1,135 @@
+﻿@model Bazar.Models.Entities.Article
+
+@{
+    ViewBag.Title = Model.ArticleId > 0 ? "Редактирование статьи" : "Новая статья";
+}
+
+<div class="headers">
+    <h1>@ViewBag.Title</h1>
+</div>
+
+@foreach (var modelState in ViewData.ModelState.Values)
+{
+    foreach (var error in modelState.Errors)
+    {
+        <div class="alert alert-danger" role="alert">
+            @error.ErrorMessage
+        </div>
+    }
+}
+
+<div class="row">
+    <form asp-action="Edit" enctype="multipart/form-data" method="post" class="form-container" data-type="type">
+
+        <div class="row">
+            <div class="col-xl-6 col-lg-12">
+
+                <input type="hidden" asp-for="ArticleId" />
+                <input type="hidden" asp-for="PublishDate" />
+
+                <div class="form-group">
+                    <label asp-for="Title"></label>
+                    <span class="counter">(<span class="current">@(Model.Title?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="Title" class="text-danger"></span></div>
+                    <input asp-for="Title" class="form-control input-counter" />
+                </div>
+
+                <div class="form-group">
+                    <label>Категория</label>
+                    <div>
+                        <select name="BlogCategoryId" class="form-control" asp-items="ViewBag.Categories">
+                            <option value="">-- Выберите категорию --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LinkUrl"></label>
+                    <span class="counter">(<span class="current">@(Model.LinkUrl?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="LinkUrl" class="text-danger"></span></div>
+                    <input asp-for="LinkUrl" class="form-control input-counter" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LinkTitle"></label>
+                    <span class="counter">(<span class="current">@(Model.LinkTitle?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="LinkTitle" class="text-danger"></span></div>
+                    <input asp-for="LinkTitle" class="form-control input-counter" />
+                </div>
+
+                <div class="form-group">
+                    @if (Model.ImageFileName != null)
+                    {
+                        <span>Текущее изображение: </span>@Model.ImageFileName<br />
+                        <a class="btn btn-sm btn-info show-hidden-image">Изменить</a>
+                        <div class="hidden-image" style="display:none">
+                            <label>Изображение</label><br />
+                            <input type="file" name="Image" class="UploadedImageInput" />
+                        </div>
+                        <img class="image-preview" src="/DynamicImages/Article/@Model.ImageFileName" />
+                        <input type="hidden" name="ImageFileName" value="@Model.ImageFileName" class="form-control" />
+                    }
+                    else
+                    {
+                        <label>Изображение</label><br />
+                        <input class="UploadedImageInput" type="file" name="Image" />
+                        <img class="image-preview" src="#" />
+                    }
+                </div>
+
+                <div class="form-group">
+                    @if (Model.ImageSmallFileName != null)
+                    {
+                        <span>Текущее изображение (маленькое): </span>@Model.ImageSmallFileName<br />
+                        <a class="btn btn-sm btn-info show-hidden-image">Изменить</a>
+                        <div class="hidden-image" style="display:none">
+                            <label>Изображение (маленькое)</label><br />
+                            <input type="file" name="SmallImage" class="UploadedImageInput" />
+                        </div>
+                        <img class="image-preview" src="/DynamicImages/Article/@Model.ImageSmallFileName" />
+                        <input type="hidden" name="ImageSmallFileName" value="@Model.ImageSmallFileName" class="form-control" />
+                    }
+                    else
+                    {
+                        <label>Изображение (маленькое)</label><br />
+                        <input class="UploadedImageInput" type="file" name="SmallImage" />
+                        <img class="image-preview" src="#" />
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ImageTitle"></label>
+                    <span class="counter">(<span class="current">@(Model.ImageTitle?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="ImageTitle" class="text-danger"></span></div>
+                    <input asp-for="ImageTitle" class="form-control input-counter" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ImageAlt"></label>
+                    <span class="counter">(<span class="current">@(Model.ImageAlt?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="ImageAlt" class="text-danger"></span></div>
+                    <input asp-for="ImageAlt" class="form-control input-counter" />
+                </div>
+
+            </div>
+
+            <div class="col-xl-6 col-lg-12">
+
+                <div class="form-group">
+                    <label asp-for="Content"></label>
+                    <div><span asp-validation-for="Content" class="text-danger"></span></div>
+                    <textarea asp-for="Content" id="Content" class="form-control" style="height:800px"></textarea>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="text-center col-12">
+            <button class="btn btn-primary" type="submit">
+                @(Model.ArticleId > 0 ? "Сохранить" : "Создать")
+            </button>
+            <a asp-action="Index" class="btn btn-default">Отмена</a>
+        </div>
+    </form>
+</div>

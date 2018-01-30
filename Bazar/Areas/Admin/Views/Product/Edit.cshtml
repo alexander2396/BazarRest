@@ -1,0 +1,240 @@
+﻿@model Bazar.Models.Entities.Product
+
+@{
+    ViewBag.Title = Model.ProductId > 0 ? "Редактирование товара" : "Новый товар";
+
+    if (ViewBag.JS == null)
+    {
+        ViewBag.JS = new List<string>();
+    }
+
+    ViewBag.JS.Add("/js/admin/product-form.js");
+}
+
+<div class="headers">
+    <h1>@ViewBag.Title</h1>
+</div>
+
+@foreach (var modelState in ViewData.ModelState.Values)
+{
+    foreach (var error in modelState.Errors)
+    {
+        <div class="alert alert-danger" role="alert">
+            @error.ErrorMessage
+        </div>
+    }
+}
+
+<div class="row">
+    <form id="SlideShowForm" asp-action="Edit" enctype="multipart/form-data" method="post" class="form-container" data-type="type">
+
+        <div class="row">
+            <div class="col-xl-6 col-lg-12">
+
+                <input type="hidden" asp-for="ProductId" />
+                <input type="hidden" asp-for="Order" />
+
+                <div class="form-group">
+                    <label asp-for="Title"></label>
+                    <span class="counter">(<span class="current">@(Model.Title?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="Title" class="text-danger"></span></div>
+                    <input asp-for="Title" class="form-control input-counter" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LinkUrl"></label>
+                    <span class="counter">(<span class="current">@(Model.LinkUrl?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="LinkUrl" class="text-danger"></span></div>
+                    <input asp-for="LinkUrl" class="form-control input-counter" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Description"></label>
+                    <span class="counter">(<span class="current">@(Model.Description?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="Description" class="text-danger"></span></div>
+                    <textarea asp-for="Description" class="form-control input-counter" style="height:400px"></textarea>
+                </div>
+
+                <div class="form-group">
+                    @if (Model.ImageFileName != null)
+                    {
+                        <span>Текущее изображение: </span>@Model.ImageFileName<br />
+                        <a class="btn btn-sm btn-info show-hidden-image">Изменить</a>
+                        <div class="hidden-image" style="display:none">
+                            <label>Изображение</label><br />
+                            <input type="file" name="Image" class="UploadedImageInput" />
+                        </div>
+                        <img class="image-preview" src="/DynamicImages/Product/@Model.ImageFileName" />
+                        <input type="hidden" name="ImageFileName" value="@Model.ImageFileName" class="form-control" />
+                    }
+                    else
+                    {
+                        <label>Изображение</label><br />
+                        <input class="UploadedImageInput" type="file" name="Image" />
+                        <img class="image-preview" src="#" />
+                    }
+                </div>
+
+                <div class="form-group">
+                    @if (Model.ImageSmallFileName != null)
+                    {
+                        <span>Текущее изображение (на главной): </span>@Model.ImageSmallFileName<br />
+                        <a class="btn btn-sm btn-info show-hidden-image">Изменить</a>
+                        <div class="hidden-image" style="display:none">
+                            <label>Изображение (на главной)</label><br />
+                            <input type="file" name="ImageSmall" class="UploadedImageInput" />
+                        </div>
+                        <img class="image-preview" src="/DynamicImages/Product/@Model.ImageSmallFileName" />
+                        <input type="hidden" name="ImageSmallFileName" value="@Model.ImageSmallFileName" class="form-control" />
+                    }
+                    else
+                    {
+                        <label>Изображение (на главной)</label><br />
+                        <input class="UploadedImageInput" type="file" name="ImageSmall" />
+                        <img class="image-preview" src="#" />
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ImageTitle"></label>
+                    <span class="counter">(<span class="current">@(Model.ImageTitle?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="ImageTitle" class="text-danger"></span></div>
+                    <input asp-for="ImageTitle" class="form-control input-counter" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ImageAlt"></label>
+                    <span class="counter">(<span class="current">@(Model.ImageAlt?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="ImageAlt" class="text-danger"></span></div>
+                    <input asp-for="ImageAlt" class="form-control input-counter" />
+                </div>
+
+                <div class="form-group">
+                    @if (Model.IconFileName != null)
+                    {
+                        <span>Текущая иконка: </span>@Model.IconFileName<br />
+                        <a class="btn btn-sm btn-info show-hidden-image">Изменить</a>
+                        <div class="hidden-image" style="display:none">
+                            <label>Иконка</label><br />
+                            <input type="file" name="Icon" class="UploadedImageInput" />
+                        </div>
+                        <img class="image-preview" src="/DynamicImages/Product/@Model.IconFileName" />
+                        <input type="hidden" name="IconFileName" value="@Model.IconFileName" class="form-control" />
+                    }
+                    else
+                    {
+                        <label>Иконка</label><br />
+                        <input class="UploadedImageInput" type="file" name="Icon" />
+                        <img class="image-preview" src="#" />
+                    }
+                </div>
+
+                <div class="form-group">
+                    @if (Model.IconWhiteFileName != null)
+                    {
+                        <span>Текущая иконка (белая): </span>@Model.IconWhiteFileName<br />
+                        <a class="btn btn-sm btn-info show-hidden-image">Изменить</a>
+                        <div class="hidden-image" style="display:none">
+                            <label>Иконка (белая)</label><br />
+                            <input type="file" name="IconWhite" class="UploadedImageInput" />
+                        </div>
+                        <img style="background-color:black" class="image-preview" src="/DynamicImages/Product/@Model.IconWhiteFileName" />
+                        <input type="hidden" name="IconWhiteFileName" value="@Model.IconWhiteFileName" class="form-control" />
+                    }
+                    else
+                    {
+                        <label>Иконка (белая)</label><br />
+                        <input class="UploadedImageInput" type="file" name="IconWhite" />
+                        <img style="background-color:black" class="image-preview" src="#" />
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="IconTitle"></label>
+                    <span class="counter">(<span class="current">@(Model.IconTitle?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="IconTitle" class="text-danger"></span></div>
+                    <input asp-for="IconTitle" class="form-control input-counter" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="IconAlt"></label>
+                    <span class="counter">(<span class="current">@(Model.IconAlt?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="IconAlt" class="text-danger"></span></div>
+                    <input asp-for="IconAlt" class="form-control input-counter" />
+                </div>
+
+            </div>
+
+            <div id="product-images-container" class="col-xl-6 col-lg-12">
+
+                <h2 class="d-inline-block">Изображения</h2>
+                <a href="#" id="add-image-btn" class="btn btn-success btn-sm d-inline-block ml-2 mb-2">Добавить</a>
+
+                @if(Model.ProductImages != null)
+                {
+                    @for (int i = 0; i < Model.ProductImages.Count(); i++)
+                    {
+                        var image = Model.ProductImages[i];
+
+                        <div class="mt-5 product-image">
+                            <input type="hidden" name="ProductImages[@i].ProductImageId" value="@image.ProductImageId" class="form-control" />
+                            <input type="hidden" name="ProductImages[@i].IsDeleted" value="false" class="form-control is-deleted-input" />
+                            <a href="#" class="btn btn-sm btn-danger btn-remove-image">Удалить</a>
+                            <div class="form-group">         
+                                <div class="hidden-image" style="display:none">
+                                    <label>Иконка</label><br />
+                                    <input type="file" name="ProductImages[@i].Filename" class="UploadedImageInput" />
+                                </div>
+                                @{ 
+                                    string extension;
+                                    if (image.FileName != null)
+                                    {
+                                        extension = image.FileName.Substring(image.FileName.LastIndexOf(".") + 1);
+                                    }
+                                    else
+                                    {
+                                        extension = null;
+
+                                    }
+                                }
+                                
+                                @if (extension == "mp4" || extension == "avi")
+                                {
+                                <video class="image-preview" controls="controls">
+                                    <source src="~/DynamicImages/Product/@image.FileName" type="video/@extension" />
+                                </video>
+                                }
+                                else
+                                {
+                                    <img class="image-preview" src="/DynamicImages/Product/@image.FileName" />
+                                }          
+                            </div>
+                            <div class="form-group">
+                                <label>Ссылка</label>
+                                <input type="text" class="form-control" name="ProductImages[@i].Link" value="@image.Link" />
+                            </div>
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" class="form-control" name="ProductImages[@i].Title" value="@image.Title" />
+                            </div>
+                            <div class="form-group">
+                                <label>Alt</label>
+                                <input type="text" class="form-control" name="ProductImages[@i].Alt" value="@image.Alt" />
+                            </div>
+                        </div>
+                    }
+                }
+                
+
+            </div>
+
+        </div>
+
+        <div class="text-center col-12">
+            <button class="btn btn-primary" type="submit">
+                @(Model.ProductId > 0 ? "Сохранить" : "Создать")
+            </button>
+            <a asp-action="Index" class="btn btn-default">Отмена</a>
+        </div>
+    </form>
+</div>

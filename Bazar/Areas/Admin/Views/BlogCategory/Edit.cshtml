@@ -1,0 +1,60 @@
+﻿@model Bazar.Models.Entities.BlogCategory
+
+@{
+    ViewBag.Title = Model.BlogCategoryId > 0 ? "Редактирование категории" : "Новая категория";
+}
+
+<div class="headers">
+    <h1>@ViewBag.Title</h1>
+</div>
+
+@foreach (var modelState in ViewData.ModelState.Values)
+{
+    foreach (var error in modelState.Errors)
+    {
+        <div class="alert alert-danger" role="alert">
+            @error.ErrorMessage
+        </div>
+    }
+}
+
+<div class="row">
+    <form asp-action="Edit" method="post" class="form-container" data-type="type">
+
+        <div class="row">
+            <div class="col-xl-6 col-lg-12">
+
+                <input type="hidden" asp-for="BlogCategoryId" />
+
+                <div class="form-group">
+                    <label asp-for="LinkTitle"></label>
+                    <span class="counter">(<span class="current">@(Model.LinkTitle?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="LinkTitle" class="text-danger"></span></div>
+                    <input asp-for="LinkTitle" class="form-control input-counter" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LinkUrl"></label>
+                    <span class="counter">(<span class="current">@(Model.LinkUrl?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="LinkUrl" class="text-danger"></span></div>
+                    <input asp-for="LinkUrl" class="form-control input-counter" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Color"></label>              
+                    <div><span asp-validation-for="Color" class="text-danger"></span></div>
+                    <input asp-for="Color" class="form-control input-counter" />
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="text-center col-12">
+            <button class="btn btn-primary" type="submit">
+                @(Model.BlogCategoryId > 0 ? "Сохранить" : "Создать")
+            </button>
+            <a asp-action="Index" class="btn btn-default">Отмена</a>
+        </div>
+    </form>
+</div>

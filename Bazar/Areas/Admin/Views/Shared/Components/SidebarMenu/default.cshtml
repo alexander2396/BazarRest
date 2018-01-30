@@ -1,0 +1,43 @@
+﻿@model List<Bazar.Areas.Admin.Infrastructure.SidebarMenuItem>
+
+<aside class="main-sidebar">
+
+    <ul class="sidebar-nav nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link nav-toggle">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </a>
+        </li>
+        @foreach (var item in Model)
+        {
+            @if (item.Items != null)
+            {
+                <li class="nav-item">
+                    <a class="nav-link btn-open-nav @(item.Selected ? "active" : "")">
+                        <i class="fa @item.FaIcon" aria-hidden="true"></i>@item.Title
+                        <div class="arrow-button"><i class="fa @(item.Selected ? "fa-angle-up" : "fa-angle-down")" aria-hidden="true"></i></div>
+                    </a>
+                    <ul class="nav flex-column" style="@(item.Selected ? "display:block" : "")">
+                        @foreach (var i in item.Items)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(i.Selected ? "active" : "")" asp-controller="@i.Controller" asp-action="@i.Action">
+                                    &#x279B; @i.Title
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link @(item.Selected ? "active" : "")" asp-controller="@item.Controller" asp-action="@item.Action">
+                        <i class="fa @item.FaIcon" aria-hidden="true"></i>@item.Title
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+
+</aside>

@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/admin/main.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <a class="brand" asp-controller="Home" asp-action="Index">
+            <img class="logo" src="~/img/admin/logo.png" alt="">
+        </a>
+
+        <a class="pull-right logout-btn" asp-area="" asp-controller="Account" asp-action="Logout">
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </a>
+    </header>
+
+    <div>
+
+        @await Component.InvokeAsync("SidebarMenu")
+
+        <div class="content">
+            <div class="panel">
+                @RenderBody()
+            </div>
+        </div>
+
+    </div>
+
+    <div id="image-container"></div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/dist/collapse.js"></script>
+    <script src="~/lib/tether/dist/js/tether.min.js"></script>
+    <script src="https://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/ckeditor/ckeditor.js"></script>
+    <script src="~/js/admin/forms.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/Sortable/Sortable.min.js"></script>
+    <script src="~/js/admin/main.js"></script>
+    <script src="~/js/admin/forms.js"></script>
+
+    <script>
+        if ($("#Content").html() != undefined) {
+            var editor = CKEDITOR.replace('Content', {
+                height: 700,
+                extraAllowedContent: 'article',
+            });
+
+        }
+    </script>
+
+    @if (ViewBag.JS != null)
+    {
+        foreach (var script in ViewBag.JS.ToArray())
+        {
+            <script defer src="@script"></script>
+        }
+    }
+
+</body>
+</html>

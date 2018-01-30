@@ -1,0 +1,159 @@
+﻿@model Bazar.Models.Entities.Product
+
+@{ 
+    ViewBag.NoFooter = true;
+    ViewBag.Title = "Базар-Ресторан";
+    ViewBag.Description = "Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.";
+    ViewBag.OgImagePath = "/DynamicImages/Product/" + Model.ImageFileName;
+
+    if (ViewBag.JS == null)
+    {
+        ViewBag.JS = new List<string>();
+    }
+
+    if (Model.ProductImages.Count() >= 5)
+    {
+        ViewBag.JS.Add("/js/slideshow.js");
+    }
+    else
+    {
+        ViewBag.JS.Add("/js/slideshow-big.js");
+    }
+}
+
+<article class="product-view">
+    
+    <div class="row" style="min-height: calc(100vh - 120px)">
+        <div class="col-lg-3 col-md-12 product-image">
+            <div class="image-container">
+                <img class="big-image" src="~/DynamicImages/Product/@Model.ImageFileName" alt="@Model.ImageAlt" title="@Model.ImageTitle" />
+            </div>
+            
+            <div class="icon">
+                <img src="~/DynamicImages/Product/@Model.IconFileName" alt="@Model.IconAlt" title="@Model.IconTitle" />
+            </div>
+        </div>
+
+        <div class="col-lg-9 col-md-12">
+
+            @*
+            <ul class="socials">
+                <li class="social-item" id="fb-share" data-social-href="@Context.Request.Host@Context.Request.Path">
+                    <img src="~/img/burger.png" alt="Alternate Text" />
+                </li>
+                <li class="social-item" id="google-share" data-social-href="@Context.Request.Host@Context.Request.Path">
+                    <img src="~/img/burger.png" alt="Alternate Text" />
+                </li>
+            </ul>
+            *@
+            
+
+            <div class="text-container">
+                <h1>@Model.Title</h1>
+                <div class="description mt-4">
+                    @Model.Description
+                </div>
+            </div>
+
+            @if (Model.ProductImages.Count() >= 5)
+            {
+                <aside class="slider">
+                    <div class="inner">
+                        <div class="slide-show">
+                            <ul class="gallery-wrapper">
+                                @{ int counter = 0; }
+                                @foreach (var image in Model.ProductImages)
+                                {
+                                    <li class="gallery-item" data-number="@counter">
+                                        <figure class="gallery-item-figure">
+                                            @if (image.FileName != null)
+                                            {
+                                                string extension = image.FileName.Substring(image.FileName.LastIndexOf(".") + 1);
+                                                if (extension == "mp4" || extension == "avi")
+                                                {
+                                                    <video controls="controls">
+                                                        <source src="~/DynamicImages/Product/@image.FileName" type="video/@extension" />
+                                                    </video>
+                                                }
+                                                else
+                                                {
+                                                    <img id="gallery-image-@image.ProductImageId" class="gallery-image" src="~/DynamicImages/Product/@image.FileName" alt="@image.Alt" title="@image.Title" />
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <iframe class="youtube-iframe" src="@image.Link" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+                                            }
+                                            <figcaption>
+                                                <span></span>
+                                            </figcaption>
+                                        </figure>
+                                    </li>
+                                    counter++;
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="small-slide-arrow-next" class="arrow-nav next" data-direction="next"></div>
+                    <div id="small-slide-arrow-prev" class="arrow-nav prev" data-direction="prev"></div>
+                </aside>
+            }
+            else if(Model.ProductImages.Count() > 0)
+            {
+                <aside class="slider no-slide">
+                    <div class="inner">
+                        <ul class="images-wrapper">
+                            @{ int counter = 0; }
+                            @foreach (var image in Model.ProductImages)
+                            {
+                                <li class="gallery-item" data-number="@counter">
+                                    <figure class="gallery-item-figure">
+                                        @if (image.FileName != null)
+                                        {
+                                            string extension = image.FileName.Substring(image.FileName.LastIndexOf(".") + 1);
+                                            if (extension == "mp4" || extension == "avi")
+                                            {
+                                                <video controls="controls">
+                                                    <source src="~/DynamicImages/Product/@image.FileName" type="video/@extension" />
+                                                </video>
+                                            }
+                                            else
+                                            {
+                                                <img id="gallery-image-@image.ProductImageId" class="gallery-image" src="~/DynamicImages/Product/@image.FileName" alt="@image.Alt" title="@image.Title" />
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <iframe class="youtube-iframe" src="@image.Link" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+                                        }
+                                        <figcaption>
+                                            <span></span>
+                                        </figcaption>
+                                    </figure>
+                                </li>
+                                counter++;
+                            }
+                        </ul>
+                    </div>
+                </aside>
+            }
+
+        </div>
+
+    </div>
+   
+</article>
+
+<div class="gallery-image-view">
+    <div class="inner">
+        <div class="wrapper">
+            <div class="images-wrapper">
+                <ul class="images-container"></ul>
+            </div>
+            <div class="arrow-nav next" data-direction="next"></div>
+            <div class="arrow-nav prev" data-direction="prev"></div>
+        </div>
+        <div id="gallery-close" class="close-icon"></div>
+    </div>
+</div>

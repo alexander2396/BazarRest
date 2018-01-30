@@ -1,0 +1,94 @@
+﻿@model Bazar.Models.Entities.Slide
+
+@{
+    ViewBag.Title = Model.SlideId > 0 ? "Редактирование слайда" : "Новый слайд";
+
+    if (ViewBag.JS == null)
+    {
+        ViewBag.JS = new List<string>();
+    }
+
+}
+
+<div class="headers">
+    <h1>@ViewBag.Title</h1>
+</div>
+
+@foreach (var modelState in ViewData.ModelState.Values)
+{
+    foreach (var error in modelState.Errors)
+    {
+        <div class="alert alert-danger" role="alert">
+            @error.ErrorMessage
+        </div>
+    }
+}
+
+@*
+    <span class="text-primary">
+        Максимальная высота картинки 500px
+    </span>
+*@
+
+<div class="row">
+    <form id="SlideShowForm" asp-action="Edit" enctype="multipart/form-data" method="post" class="form-container" data-type="type">
+
+        <div class="row">
+            <div class="col-xl-6 col-lg-12">
+
+                <input type="hidden" asp-for="SlideId" />
+                <input type="hidden" asp-for="Order" />
+
+                <div class="form-group">
+                    <label asp-for="Url"></label>
+                    <span class="counter">(<span class="current">@(Model.Url?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="Url" class="text-danger"></span></div>
+                    <input asp-for="Url" class="form-control input-counter" />
+                </div>
+
+                <div class="form-group">
+                    @if (Model.ImgFileName != null)
+                    {
+                        <span>Текущее изображение: </span>@Model.ImgFileName<br />
+                        <a class="btn btn-sm btn-info show-hidden-image">Изменить</a>
+                        <div class="hidden-image" style="display:none">
+                            <label>Изображение</label><br />
+                            <input type="file" name="Image" class="UploadedImageInput" />
+                        </div>
+                        <img class="image-preview" src="/DynamicImages/Slides/@Model.ImgFileName" />
+                        <input type="hidden" name="ImgFileName" value="@Model.ImgFileName" class="form-control" />
+                    }
+                    else
+                    {
+                        <label>Изображение</label><br />
+                        <input class="UploadedImageInput" type="file" name="Image" />
+                        <img class="image-preview" src="#" />
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Title"></label>
+                    <span class="counter">(<span class="current">@(Model.Title?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="Title" class="text-danger"></span></div>
+                    <input asp-for="Title" class="form-control input-counter" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Alt"></label>
+                    <span class="counter">(<span class="current">@(Model.Alt?.Length ?? 0)</span> / <span class="total"></span>)</span>
+                    <div><span asp-validation-for="Alt" class="text-danger"></span></div>
+                    <input asp-for="Alt" class="form-control input-counter" />
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="text-center col-12">
+            <button class="btn btn-primary" type="submit">
+                @(Model.SlideId > 0 ? "Сохранить" : "Создать")
+            </button>
+            <a asp-action="Index" class="btn btn-default">Отмена</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,51 @@
+﻿@model Bazar.Models.ViewModels.BlogListViewModel
+
+@{
+    ViewBag.Title = "Базар-Ресторан";
+}
+
+<section id="news" class="news mb-5">
+
+    <div class="categories-menu mt-4">
+        <ul class="categories-list">
+            @foreach (var category in Model.BlogCategories)
+            {
+                <li class="category-item p-3" style="@(Model.CurrentCategory.BlogCategoryId == category.BlogCategoryId ? "color:#" + category.Color + "!important" : "")">
+                    <a asp-route-linkCategory="@category.LinkUrl">
+                        @category.LinkTitle
+                    </a>
+                </li>
+            }   
+        </ul>
+    </div>
+
+    <div class="container">
+
+        <div class="row articles-row">
+            @foreach (var article in Model.Articles)
+            {
+                <div class="col-xl-3 col-lg-3 col-md-6 mt-4 article-item">
+                    <a asp-controller="Blog" asp-action="View" asp-route-linkCategory="@article.BlogCategory.LinkUrl" asp-route-linkUrl="@article.LinkUrl">
+                        <div class="image-container">
+                            <img class="article-image" src="~/DynamicImages/Article/@article.ImageSmallFileName" alt="@article.ImageAlt" title="@article.ImageTitle" />
+                        </div>
+                        <div class="title">@article.LinkTitle</div>
+                    </a>
+                    <div class="info">
+                        <div class="date">
+                            <img src="~/img/clock.png" alt="clock icon" />
+                            @article.FormattedDate
+                        </div>
+                        <div class="category" >
+                            <a asp-controller="Blog" asp-route-linkCategory="@article.BlogCategory.LinkUrl" style="color:#@article.BlogCategory.Color">
+                                <span class="stick">|</span>@article.BlogCategory.LinkTitle
+                            </a>                      
+                        </div>
+                    </div>      
+                </div>
+            }
+        </div>     
+
+    </div>
+    
+</section>

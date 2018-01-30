@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Bazar.Models.Entities.Slide>
+
+@{
+    ViewBag.Title = "Слайды";
+
+    if (ViewBag.JS == null)
+    {
+        ViewBag.JS = new List<string>();
+    }
+
+    ViewBag.JS.Add("/js/admin/slide.js");
+}
+
+<div class="headers">
+    <h1>@ViewBag.Title</h1>
+</div>
+
+<div class="buttons">
+    <a class="btn btn-success" asp-action="Create">
+        Добавить слайд
+    </a>
+</div>
+
+@if (TempData["message"] != null)
+{
+    <div class="alert @TempData["alertType"]" role="alert">
+        @TempData["message"]
+    </div>
+}
+
+<span class="text-muted">Перетаскивайте слайды для изменения порядка сортировки</span>
+
+<div class="row" id="sortable">
+    @foreach (var item in Model)
+    {
+        <div class="col-xl-4 col-lg-6 gallery-item" data-id="@item.SlideId">
+            <figure class="clickable">
+                <div class="image-container">
+                    <img style="background-image:url('/DynamicImages/Slides/@item.ImgFileName')" data-src="/DynamicImages/SlideShowMainPage/@item.ImgFileName" />
+                </div>
+                <figcaption>
+                    <p style="text-transform:none">@item.Url</p>
+
+                    <form asp-action="Delete" method="post">
+                        <a asp-action="Edit"
+                           asp-route-id="@item.SlideId">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </a>
+                        <input type="hidden" name="id" value="@item.SlideId" />
+                        <button type="submit" class="delete-button">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </form>
+
+                </figcaption>
+            </figure>
+        </div>
+    }
+</div>
+
+@Html.Partial("_ConfirmDeleteModalPartial", "Слайд будет удален!")

@@ -1,0 +1,16 @@
+{
+  "name": "asp.net",
+  "private": true,
+  "dependencies": {
+    "jquery": "",
+    "bootstrap": "v4.0.0-beta",
+    "font-awesome": "Font-Awesome#v4.7.0",
+    "jquery-validation": "1.16.0",
+    "jquery-validation-unobtrusive": "v3.2.6",
+    "ckeditor": "#standard/4.7.2",
+    "Sortable": "1.6.0"
+  },
+  "resolutions": {
+    "bootstrap": "v4.0.0-beta"
+  }
+}

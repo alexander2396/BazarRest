@@ -1,0 +1,31 @@
+﻿@model Bazar.Models.ViewModels.LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Авторизация</h1>
+        <form asp-action="Login" asp-controller="Account" method="post">
+            <div asp-validation-summary="All" class="text-left text-danger"></div>
+            <input asp-for="ReturnUrl" type="hidden" />
+            <input type="text" asp-for="Name" />
+            <input type="password" asp-for="Password" />
+            <input class="submit" type="submit" value="Войти" />
+        </form>
+    </div>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>
+

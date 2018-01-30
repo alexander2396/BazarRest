@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <meta property="og:title" content="@ViewBag.Title" />
+    <meta property="og:url" content="@Context.Request.Host@Context.Request.Path" />
+    <meta property='og:site_name' content='Базар-Ресторан' />
+
+    @{
+        if (!String.IsNullOrEmpty(ViewBag.OgImagePath))
+        {
+            <meta property="og:image" content="http://@(Context.Request.Host + Url.Content(ViewBag.OgImagePath))" />
+        }
+
+        if (!String.IsNullOrEmpty(ViewBag.Description))
+        {
+            <meta name="description" content="@ViewBag.Description" />
+            <meta property="og:description" content="@ViewBag.Description" />
+        }
+    }
+    <style>
+        .mobile-navbar {
+            transform: translateX(-250px);
+        }
+    </style>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/main.css" rel="stylesheet" />
+</head>
+<body>
+
+    <header id="main-header" class="main-header">
+
+        <div class="logo-container">
+            <a href="/"><img src="~/img/logo.png" alt="site logo" class="site-logo" /></a>      
+        </div>
+
+        <div class="burger-container" id="menu-show-btn">
+            <img src="~/img/burger.png" alt="burger icon" />
+        </div>
+
+        <nav class="main-navbar @(ViewBag.MainPage != null ? "with-anchors" : "")">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="@(ViewBag.MainPage != null ? "#site-main" : "/")">головна</a>
+                </li>
+                <li class="nav-item">
+                    <a href="@(ViewBag.MainPage != null ? "#products" : "/#products")">наші товари</a>
+                </li>
+                <li class="nav-item">
+                    <a href="@(ViewBag.MainPage != null ? "#restaurant" : "/#restaurant")">ресторан</a>
+                </li>
+                <li class="nav-item">
+                    <a href="@(ViewBag.MainPage != null ? "#news" : "/#news")">новини</a>
+                </li>
+                <li class="nav-item">
+                    <a href="@(ViewBag.MainPage != null ? "#contacts" : "/#contacts")">контакти</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="map-container">
+            <a data-toggle="modal" data-target="#map-modal">
+                <img src="~/img/map.png" alt="map icon"/>
+            </a>  
+        </div>
+
+    </header>
+
+    <nav class="mobile-navbar @(ViewBag.MainPage != null ? "with-anchors" : "")">
+        <a id="menu-hide-btn">
+            <img src="~/img/cross.png" alt="cross icon" />
+        </a>
+        <ul class="mobile-menu">
+            <li class="menu-item">
+                <a href="@(ViewBag.MainPage != null ? "#site-main" : "/")">головна</a>
+            </li>
+            <li class="menu-item">
+                <a href="@(ViewBag.MainPage != null ? "#products" : "/#products")">наші товари</a>
+            </li>
+            <li class="menu-item">
+                <a href="@(ViewBag.MainPage != null ? "#restaurant" : "/#restaurant")">ресторан</a>
+            </li>
+            <li class="menu-item">
+                <a href="@(ViewBag.MainPage != null ? "#news" : "/#news")">новини</a>
+            </li>
+            <li class="menu-item">
+                <a href="@(ViewBag.MainPage != null ? "#contacts" : "/#contacts")">контакти</a>
+            </li>
+        </ul>
+    </nav>
+    <div id="foreground"></div>
+
+    <main id="site-main" class="site-main">
+        @RenderBody()
+    </main>
+
+    @if (ViewBag.NoFooter == null)
+    {
+        <footer class="main-footer">
+            <div class="row">
+                <div class="col-xl-2 col-lg-4 col-md-4 col-sm-12">
+                    <div class="logo-container">
+                        <img class="logo" src="~/img/logo-white.png" alt="site logo" />
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 mt-4 mt-xl-4">
+                    <ul class="products-list">
+                        <li>
+                            <a href="/product/myaso">М'ясо</a>
+                        </li>
+                        <li>
+                            <a href="/product/kolbasy">Ковбаси</a>
+                        </li>
+                        <li>
+                            <a href="/product/delicates">М'ясні делікатеси</a>
+                        </li>
+                        <li>
+                            <a href="/product/ryba">Риба та морепродукти</a>
+                        </li>
+                        <li>
+                            <a href="/product/molochnі-produkti">Молочні продукти</a>
+                        </li>
+                        <li>
+                            <a href="/product/ovochi-fructy">Овочі. Фрукти</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 mt-0 mt-sm-4">
+                    <ul class="products-list">
+                        <li>
+                            <a href="/product/vypechka">Кондитерська пекарня</a>
+                        </li>
+                        <li>
+                            <a href="/product/bakalіya">Бакалія</a>
+                        </li>
+                        <li>
+                            <a href="/product/marinady">Маринади Соління</a>
+                        </li>
+                        <li>
+                            <a href="/product/specii">Спеції</a>
+                        </li>
+                                                @*
+            <li>
+            <a href="#">Алкогольні напої</a>
+        </li>
+        <li>
+            <a href="#">Ресторан</a>
+        </li>
+                                                *@
+                    </ul>
+                </div>
+                <div class="col-xl-4 col-lg-6  col-md-6 mt-4 mt-xl-0 contacts">
+                    <div class="title">Контакти</div>
+                    <div class="items row">
+                        <div class="col-4">
+                            <ul class="titles mt-4">
+                                <li class="title">адреса</li>
+                                <li class="title">телефон</li>
+                                <li class="title">e-mail</li>
+                            </ul>
+                        </div>
+                        <div class="col-8">
+                            <ul class="values mt-4">
+                                <li class="value">Пр-т Науки, 5</li>
+                                <li class="value"><a href="tel:+380444517394">044 451 73 94</a></li>
+                                <li class="value"><a href="tel:+380674809792">067 480 97 92</a></li>
+                                <li class="value">info@bazar-restoran.com.ua</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6  col-md-6 mt-4 mt-xl-0 text-center">
+                    <div class="title">
+                        «Краща їжа» в соціальних мережах
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <a href="#"><img width="50" src="~/img/fb-icon.png" alt="facebook icon" /></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    }
+
+    <div class="modal fade" id="map-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <iframe class="map-in-modal" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12451.416337460221!2d30.52937839513628!3d50.40252904573515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cf49a96e0275%3A0x680914919f77491c!2sBazar-Restoran+%22Krashcha+Yizha%22!5e0!3m2!1sru!2sua!4v1516808076002" style="border:0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/tether/dist/js/tether.min.js"></script>
+    <script src="~/js/bootstrap.js"></script>
+    <script src="~/js/TweenMax.min.js"></script>
+    <script src="~/js/main.js"></script>
+    @if (ViewBag.JS != null)
+    {
+        foreach (var script in ViewBag.JS.ToArray())
+        {
+            <script defer src="@script"></script>
+        }
+    }
+</body>
+</html>

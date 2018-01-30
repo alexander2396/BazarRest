@@ -1,0 +1,225 @@
+﻿@model Bazar.Models.ViewModels.HomeViewModel
+    
+@{ 
+    ViewBag.Title = "Базар-Ресторан";
+}
+
+<div class="slideshow">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            @{ int i = 0;}
+            @foreach (var slide in Model.Slides)
+            {
+                i = i + 1;
+                <li data-target="#carouselExampleIndicators" data-slide-to="@(i - 1)" class="@(i == 1 ? "active" : "")"></li>
+            }
+        </ol>
+        <div class="carousel-inner" role="listbox">
+            @{ int j = 0;}
+            @foreach (var slide in Model.Slides)
+            {
+                j = j + 1; 
+                <div class="carousel-item @(j == 1 ? "active" : "")">
+                    <img class="d-block img-fluid" src="~/DynamicImages/Slides/@slide.ImgFileName" alt="@slide.Alt" title="@slide.Title">
+                </div>
+            }
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+
+<section id="products" class="products mt-5">
+
+    <div class="container">
+        <h2 class="text-center">Наші товари</h2>
+
+        <div class="row">
+            @foreach(var product in Model.Products)
+            {
+                <div class="col-xl-4 col-lg-4 col-md-6 product-item">
+                    <a asp-controller="product" asp-route-linkUrl="@product.LinkUrl">
+                        <figure class="product-item-container">
+                            <img class="product-image" src="~/DynamicImages/Product/@product.ImageSmallFileName" alt="@product.ImageAlt" title="@product.ImageTitle" />
+                            <div class="hover">
+                                <div class="hover-content">
+                                    <div class="title">@product.Title</div>
+                                    <div class="icon">
+                                        <img class="img-fluid img-icon" src="~/DynamicImages/Product/@product.IconWhiteFileName" alt="@product.IconAlt" title="@product.IconTitle" />
+                                    </div>
+                                </div>                                
+                            </div>  
+                        </figure>
+                    </a>                   
+                </div>
+            }
+            <div class="col-xl-4 col-lg-4 col-md-6 product-item last">
+                    <figure class="product-item-container text-center">
+                        <img class="product-image" src="~/img/logo.png" alt="Базар-Ресторан логотип" />
+                        <div class="phone">044 451 73 94</div>
+                    </figure>
+            </div>
+        </div>
+
+    </div>
+    
+</section>
+
+<section id="restaurant" class="restaurant">
+    <h2 class="text-center">@Model.Restoran.Title</h2>
+
+    <div class="inner">
+
+        <div class="video-container">
+            <video id="bar-video" poster="/video/video-poster.png" muted>
+                <source src="~/video/video1.mp4" type="video/mp4" />
+            </video>
+        </div>
+
+        <div class="text-container">
+            <div class="inner text-center">
+                <h3 class="text-right">@Model.Restoran.ContentTitle</h3>
+                <div class="text-content text-right">
+                    @Html.Raw(Model.Restoran.Content)
+                </div>
+                <div class="btn-container text-center">
+                    <a href="@Model.Restoran.Url" class="button">
+                        @Model.Restoran.BtnTitle
+                    </a>
+                    <br />
+                    <img id="preloader" src="~/img/preloader.gif" alt="preloader icon" />
+                </div>
+                <img class="mt-3" width="100" src="~/img/bar-icon.png" alt="bar icon" />
+            </div>                   
+        </div>
+
+    </div>
+
+</section>
+
+<section id="news" class="news">
+
+    <div class="container">
+        <h2 class="text-center">новини</h2>
+
+        <div class="row articles-row">
+            @foreach (var article in Model.Articles)
+            {
+                <div class="col-xl-3 col-lg-3 col-md-6 mt-4 article-item">
+                    <a asp-controller="Blog" asp-action="View" asp-route-linkCategory="@article.BlogCategory.LinkUrl" asp-route-linkUrl="@article.LinkUrl">
+                        <div class="image-container">
+                            <img class="article-image" src="~/DynamicImages/Article/@article.ImageSmallFileName" alt="@article.ImageAlt" title="@article.ImageTitle" />
+                        </div>
+                        <div class="title">@article.LinkTitle</div>
+                    </a>
+                        
+                        <div class="info">
+                            <div class="date">
+                                <img src="~/img/clock.png" alt="clock icon" />
+                                @article.FormattedDate
+                            </div>
+                            <div class="category">
+                                <a asp-action="Index" asp-controller="Blog" asp-route-linkCategory="@article.BlogCategory.LinkUrl" style="color:#@article.BlogCategory.Color">
+                                    <span class="stick">|</span>@article.BlogCategory.LinkTitle
+                                </a>                      
+                            </div>
+                        </div>      
+                </div>
+            }
+        </div>     
+
+        @if (Model.MoreArticles == true)
+        {
+            <div class="btn-container text-center">
+                <div class="button" id="load-news">
+                    більше
+                </div>
+                <br />
+                <img id="preloader" src="~/img/preloader.gif" alt="preloader icon" />
+            </div>
+        }
+        
+    </div>
+    
+</section>
+
+<section id="contacts" class="contacts mt-5">
+    <h2 class="text-center">як проїхати</h2>
+    <div class="map mt-5">
+        <iframe class="map-in-modal" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12451.416337460221!2d30.52937839513628!3d50.40252904573515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cf49a96e0275%3A0x680914919f77491c!2sBazar-Restoran+%22Krashcha+Yizha%22!5e0!3m2!1sru!2sua!4v1516808076002" style="border:0" allowfullscreen></iframe>
+    </div>
+    <div class="container">
+        <div class="form row">
+            <div class="address col-lg-4">
+                <ul class="contacts-list">
+                    <li class="contacts-item">
+                        <div class="icon">
+                            <img src="~/img/home-icon.png" alt="home icon" />
+                        </div>
+                        <div class="text">
+                            <div class="title">адреса</div>
+                            <div class="description">Пр-т Науки, 5</div>
+                        </div>
+                    </li>
+                    <li class="contacts-item">
+                        <div class="icon">
+                            <img src="~/img/mobile-icon.png" alt="phone icon" />
+                        </div>
+                        <div class="text">
+                            <div class="title">телефони</div>
+                            <div class="description">
+                                <a href="tel:+380444517394">044 451 73 94</a> <br />
+                                <a href="tel:+380674809792">067 480 97 92</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="contacts-item">
+                        <div class="icon">
+                            <img src="~/img/email-icon.png" alt="email icon" />
+                        </div>
+                        <div class="text">
+                            <div class="title">e-mail</div>
+                            <div class="description">info@bazar-restoran.com.ua</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <form class="form-container col-lg-8 row" asp-controller="Home" asp-action="SendOrder" method="post">
+
+                <div class="input-container col-xl-3 col-lg-6 pb-4 mt-2 mt-lg-0">
+                    <span asp-validation-for="@Model.Order.Name" class="text-danger"></span>
+                    <input asp-for="@Model.Order.Name" placeholder="ім'я" />
+                </div>
+                <div class="input-container col-xl-3 col-lg-6 pb-4">
+                    <input asp-for="@Model.Order.Email" placeholder="email" />
+                </div>
+                <div class="input-container col-xl-3 col-lg-6 pb-4">
+                    <span asp-validation-for="@Model.Order.PhoneNumber" class="text-danger"></span>
+                    <input asp-for="@Model.Order.PhoneNumber" placeholder="телефон" />
+                </div>
+                <div class="input-container col-xl-3 col-lg-6 pb-4">
+                    <select asp-items="@ViewBag.Themes" asp-for="@Model.Order.ThemeId">
+                        <option value="">тема</option>
+                    </select>
+                </div>
+                <div class="input-container col-xl-12 pb-4">
+                    <textarea asp-for="@Model.Order.Message" placeholder="повідомлення"></textarea>
+                </div>
+                <div class="input-container col-xl-4">
+                    <input type="hidden" name="ReturnUrl" />
+                    <input type="submit" name="name" value="відправити" />
+                </div>
+                
+            </form>
+        </div>
+    </div>
+    
+
+</section>
+
